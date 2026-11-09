@@ -1,0 +1,159 @@
+Setting up Tekkoh for an agent
+==============================
+
+You are a personal agent, and the person you work for has asked you to set
+up Tekkoh. Tekkoh is their end-to-end encrypted daily journal. A program
+called `tekkoh` gives you access to it. All the encryption happens inside
+that program, so Tekkoh's server only ever sees sealed data.
+
+Follow the steps below in order. Step 2 is done by the person, not by you.
+
+
+1. Install the program
+----------------------
+
+Pick the build for this machine's CPU:
+
+    uname -m        # x86_64 -> amd64, aarch64 or arm64 -> arm64
+
+Download it and check it:
+
+    ARCH=amd64      # or arm64
+    curl -fsSLO https://tekkoh.com/dl/tekkoh-linux-$ARCH
+    sha256sum tekkoh-linux-$ARCH
+
+The checksum must match the one below. If it doesn't, stop, delete the
+file and tell the person.
+
+    f0ce31fba6bc56804e050875f2eebb4873b060648224cad5663cf300f343086b  tekkoh-linux-amd64
+    9c3534523771c6eddd3ca7bdc2540b36bf72ea2ea6f5d206d367800208bcb2d3  tekkoh-linux-arm64
+
+Install it:
+
+    mkdir -p ~/.local/bin
+    install -m 0755 tekkoh-linux-$ARCH ~/.local/bin/tekkoh
+    rm tekkoh-linux-$ARCH
+    export PATH="$HOME/.local/bin:$PATH"   # add this to your shell profile too
+    tekkoh help
+
+If you would rather build it from source, the code is open source (MIT)
+at https://github.com/arfct/tekkoh (the program is in cmd/tekkoh). This
+needs Go 1.25 or later:
+
+    GOBIN=~/.local/bin go install github.com/arfct/tekkoh/cmd/tekkoh@latest
+
+The build is reproducible. A git checkout of commit 09ff3d2, built with
+Go 1.27.3 using
+`CGO_ENABLED=0 GOOS=linux GOARCH=$ARCH go build -trimpath -ldflags="-s -w" ./cmd/tekkoh`,
+gives exactly the checksums above. (Go records the commit in the binary,
+so `go install` or another commit gives a working build with different
+checksums.)
+
+
+2. Linking: the person approves it on their phone
+--------------------------------------------------
+
+Linking gives you the key to the person's journal. They approve it in the
+Tekkoh app on their iPhone. No PIN is involved, so never ask for one.
+
+Make a link, giving a short name for yourself that they'll recognise:
+
+    tekkoh link --name "<a short name for you, e.g. Assistant>"
+
+It prints what the person needs, and nothing addressed to you:
+
+    Link:    https://tekkoh.com/link#...
+    Agent:   <your name>
+    Code:    123 456
+    Expires: 18:48 PST (works once)
+    Status:  waiting for approval in Tekkoh on the journal owner's iPhone
+
+(Add --json for the same as JSON.) Passing the link and code on to the
+person is the point of this step, so send them both, word for word, with
+something like:
+
+    To link me to your journal, open this on your iPhone:
+    <the link>
+    Tekkoh will ask you to approve "<your name>". It should show <code>.
+
+The link works once, for 15 minutes. If they open it on a computer
+instead, the page shows a code to scan with the phone's camera.
+
+Then wait for them to approve it:
+
+    tekkoh link --wait
+
+This waits up to 90 seconds. If it says "not approved yet", run it again;
+it's fine to keep doing so until the link expires. Running `tekkoh link`
+again with the same name prints the same link, if you need to send it
+again. If it says the link expired, run `tekkoh link` for a new one.
+
+Once it's linked, check:
+
+    tekkoh status
+
+It should show their journal, your agent name, their time zone, and
+"Session: active".
+
+If the person has a terminal on this machine and would rather type their
+username and PIN there, they can run `tekkoh link --pin` themselves.
+Never run that one yourself.
+
+
+3. Using it
+-----------
+
+Reading:
+
+  - Commands: `tekkoh read [DAY]`, `tekkoh days --from -30`,
+    `tekkoh search WORDS...` and `tekkoh streak`.
+  - Add --json when you parse the output.
+  - DAY is `today` (the default), `yesterday`, `-N` (N days ago) or
+    `YYYY-MM-DD`. Days are always in the person's time zone.
+
+Your own notes: `tekkoh note "..."` records what you did for the person on
+a day. It appears on their page, under your name, apart from their own
+writing.
+
+  - Each run adds a line to your note for that day.
+  - To keep one tidy summary instead, rewrite it with
+    `tekkoh note --replace "..."`.
+  - Write plainly and briefly, in the past tense. For example: "Booked the
+    dentist for Tue 10:00. Paid the water bill. Drafted the reply to the
+    landlord."
+  - Before you finish for the day, make sure that day's note covers what
+    you did.
+
+The person's words: `tekkoh write "..."` adds to the person's own writing.
+
+  - Use it only when they ask you to put something in their journal.
+  - Never use `write --replace` unless they explicitly ask for it.
+
+Photos: `tekkoh photos DAY --out DIR` decrypts a day's photos. Only do this
+when you need them, and delete them when you're done.
+
+
+4. Rules
+--------
+
+The journal is the most private thing the person has.
+
+  - Use what you read only for tasks they give you.
+  - Never quote it or send it to any outside service, person or tool unless
+    they ask for that specifically.
+  - Don't keep copies of it anywhere except `tekkoh`'s own cache.
+
+~/.config/tekkoh/identity.json holds the key to their whole journal.
+
+  - Never print it, copy it, back it up, or move it off this machine.
+  - Never change its permissions. It must stay 0600.
+
+Two more:
+
+  - If `tekkoh` says you've been signed out, stop using it and tell the
+    person. Don't try to link again on your own.
+  - If you no longer need access, run `tekkoh unlink`. That signs you out
+    and deletes the key from this machine.
+
+How Tekkoh keeps the journal private, and what an agent can and can't do:
+https://tekkoh.com/security

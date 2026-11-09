@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security · Tekkoh</title>
+<meta name="description" content="How Tekkoh keeps your journal private, and where that protection stops.">
+<meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B1A17" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&family=Shippori+Mincho:wght@500&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="top">
+  <a class="mark" href="/" aria-label="Tekkoh, home">
+    <svg class="enso" aria-hidden="true"><use href="/img/enso.svg#e"/></svg>
+    <span>Tekkoh</span>
+  </a>
+  <nav><a href="/">Home</a></nav>
+</header>
+
+<main class="doc">
+  <p class="label"><span class="kanji">鍵</span> · Security</p>
+  <h1>How your journal stays yours.</h1>
+  <p>A journal sets a simple bar: nobody but you should be able to read it, including whoever runs the server. This page says how Tekkoh meets that bar, and, just as plainly, where it falls short.</p>
+
+  <h2>What we promise</h2>
+  <ol>
+    <li><strong>The server can't read your journal.</strong> Your words, photos, captions, places, activity and sun times are all encrypted on your phone before they're sent. The server, its database and its backups hold only ciphertext.</li>
+    <li><strong>Only your devices hold the key.</strong> It lives in your iPhone's Keychain and iCloud Keychain, and never reaches the server in a form it can use.</li>
+    <li><strong>Your six-digit PIN brings the journal back on a new phone.</strong> Nobody watching the network, and nobody holding a copy of the database alone, can test PINs. The server allows ten wrong tries, each slower than the last, then destroys its copy of your recovery. This promise is weaker than the others; see below.</li>
+    <li><strong>No other account can read or change yours.</strong></li>
+  </ol>
+
+  <h2>How</h2>
+  <ul>
+    <li>Every page is sealed with its own random key using AES-256-GCM, and that key is sealed with your journal's key. Photos are sealed the same way, each with its own key.</li>
+    <li>A page's id is derived from your key and its date, so the server can't tell which day a page belongs to.</li>
+    <li>A version number inside the encryption means the server can't hand back an older copy of a page as if it were current.</li>
+    <li>Your PIN is stretched with 600,000 rounds of PBKDF2 on your phone. What travels to the server is sealed to the server's own key, so nothing in transit can be used to test PINs.</li>
+    <li>The whole journal is kept on your phone, sealed exactly as the server holds it. Nothing is ever written to disk in the clear.</li>
+    <li>A linked browser gets the key from your phone, sealed so only that browser can open it, and holds it in a form even the page's own code can't read out. You can sign any browser out from your phone.</li>
+  </ul>
+
+  <h2 id="agents">Agents</h2>
+  <p>A personal agent can use your journal through the <code>tekkoh</code> command-line tool, ideally in a confidential VM you control. It reads, adds to your pages, and leaves a note in the margin saying what it did for you.</p>
+  <ul>
+    <li><strong>You approve it on your phone.</strong> The agent sends you a one-time link. On your iPhone it opens Tekkoh, which shows the agent's name and six digits and asks for Face ID. The app then sends the key sealed so only that agent can open it. No PIN is typed anywhere.</li>
+    <li><strong>The link holds nothing secret,</strong> and this site never sees it: everything is after the <code>#</code>. It works once, for fifteen minutes.</li>
+    <li><strong>Only approve a link you asked for just now.</strong> Anyone can send you one, and the name in it is the sender's own say-so. Approving gives whoever made it the key to your whole journal.</li>
+    <li><strong>An agent is as trusted as your phone.</strong> It holds the key itself, so it can read everything, and signing it out stops only an agent that plays fair. Link only one you'd trust with everything you've written.</li>
+  </ul>
+
+  <h2>Where it stops</h2>
+  <ul>
+    <li><strong>A six-digit PIN has limits.</strong> Someone who held both the server's database <em>and</em> its secret key could try all million PINs offline, in minutes to hours. The attempt limit protects you against everyone else. A longer recovery phrase would close this gap.</li>
+    <li><strong>The app you run is the root of trust.</strong> A build that sent your key elsewhere would undo all of this, and iOS gives no way to check an App Store build against its source.</li>
+    <li><strong>The server sees some metadata:</strong> your username, when you sync and from which IP address, and how many pages and photos you have and their sizes. Because a page is usually first uploaded on its own day, upload times show roughly which days you wrote.</li>
+    <li><strong>Someone else can wipe your PIN recovery</strong> by guessing wrong ten times at your username. Your journal is unaffected, and the app asks you to choose a new PIN.</li>
+    <li><strong>Apple is involved in two places.</strong> Your devices share the key through iCloud Keychain, which Apple encrypts end to end. Place names come from Apple Maps, so the coordinates of places you visit go to Apple (not to Tekkoh) to be named.</li>
+    <li><strong>A web page comes from its server on every visit,</strong> so the browser version is only as trustworthy as whoever serves it. That's true of every web-based end-to-end encrypted product, and it's why the app is the safer place to write.</li>
+    <li><strong>Your phone, once unlocked,</strong> is readable to anyone holding it and to malware on it. The Face ID lock hides your pages from someone who picks it up, but adds no encryption.</li>
+    <li><strong>No formal proof or outside audit yet.</strong> One independent review has been done. Its findings were fixed or mitigated, except the PIN limit above, which is open by design. A cryptographer should look at it before anyone trusts it with something that truly matters.</li>
+  </ul>
+
+  <h2 id="code">Read the code</h2>
+  <p>Tekkoh is open source under the MIT license, so you don't have to take any of this on trust. The iPhone app is at <a class="quiet" href="https://github.com/arfct/tekkoh-ios">arfct/tekkoh-ios</a>, with the full security notes in its <code>SECURITY.md</code>. The server, the web version and the <code>tekkoh</code> tool for agents are at <a class="quiet" href="https://github.com/arfct/tekkoh">arfct/tekkoh</a>, and this site at <a class="quiet" href="https://github.com/arfct/tekkoh.com">arfct/tekkoh.com</a>.</p>
+
+  </main>
+
+<footer>
+  <span class="kanji">手帳</span>
+  <a href="/">Tekkoh</a>
+  <span class="muted">© 2026</span>
+</footer>
+
+</body>
+</html>

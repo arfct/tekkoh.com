@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Link an agent · Tekkoh</title>
+<meta name="description" content="Approve an agent's link to your Tekkoh journal, on your iPhone.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B1A17" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&family=Shippori+Mincho:wght@500&display=swap">
+<link rel="stylesheet" href="/style.css">
+<script src="/vendor/qrcode.js" defer></script>
+<script src="/link.js" defer></script>
+</head>
+<body>
+
+<header class="top">
+  <a class="mark" href="/" aria-label="Tekkoh, home">
+    <svg class="enso" aria-hidden="true"><use href="/img/enso.svg#e"/></svg>
+    <span>Tekkoh</span>
+  </a>
+  <nav><a href="/security">Security</a></nav>
+</header>
+
+<main class="doc link-doc">
+  <p class="label"><span class="kanji">繋</span> · Link an agent</p>
+
+  <section id="ask" hidden>
+    <h1>An agent is asking to open your journal.</h1>
+    <p class="lede-sm">It calls itself <strong id="name">an agent</strong>. Approve it in the Tekkoh app on your iPhone, which holds your journal's key. You won't be asked for your PIN.</p>
+
+    <div class="link-card">
+      <div id="on-phone" hidden>
+        <a class="button" id="open" href="#">Open in Tekkoh</a>
+        <p class="fine muted">If Tekkoh didn't open by itself, tap the button.</p>
+      </div>
+      <div id="on-computer" hidden>
+        <figure class="qr" id="qr" aria-label="A code to scan with your iPhone's camera"></figure>
+        <p class="fine muted">Scan this with your iPhone's camera, or with Tekkoh in Settings › Browsers and agents.</p>
+      </div>
+      <p class="digits-label">The app and the agent's message should both show</p>
+      <p class="digits" id="digits">··· ···</p>
+      <p class="link-state" id="state" role="status" aria-live="polite"><span class="dot" aria-hidden="true"></span> <span id="state-text">Waiting for your phone…</span></p>
+    </div>
+    <div class="link-card done" id="done" hidden>
+      <svg class="enso big" aria-hidden="true"><use href="/img/enso.svg#e"/></svg>
+      <p class="muted" id="done-text">The agent can open your journal now. You can close this page, and sign it out any time in Tekkoh, under Settings › Browsers and agents.</p>
+    </div>
+
+    <h2>Before you approve</h2>
+    <ul>
+      <li><strong>Only approve an agent you asked to link just now.</strong> Anyone can send a link like this one.</li>
+      <li><strong>It will hold the key to your whole journal.</strong> It can read every page and photo, add to your pages, and leave notes on what it did for you.</li>
+      <li><strong>You can sign it out at any time</strong> in Tekkoh, under Settings › Browsers and agents.</li>
+      <li><strong>The link works once</strong>, for fifteen minutes.</li>
+    </ul>
+    <p class="fine muted">The key in this link never leaves this page: it reads the part after the <code>#</code>, which browsers keep to themselves. It asks Tekkoh's server only whether the link has been used yet. <a class="quiet" href="/security#agents">How agents are kept in check →</a></p>
+  </section>
+
+  <section id="broken" hidden>
+    <h1>This link is incomplete.</h1>
+    <p>Part of it may have been cut off when it was copied. Ask your agent for a new one.</p>
+  </section>
+
+  <noscript>
+    <h1>Open this link on your iPhone.</h1>
+    <p>With Tekkoh installed, it opens the app to approve the agent.</p>
+  </noscript>
+</main>
+
+<footer>
+  <span class="kanji">手帳</span>
+  <a href="/">Tekkoh</a>
+  <span class="muted">© 2026</span>
+</footer>
+
+</body>
+</html>
