@@ -19,7 +19,9 @@ CSS in `site/`, no build step. Netlify publishes `site/` on every push to
   tekkoh.cronbon.com); the key in the fragment never leaves the page. `site/vendor/qrcode.js`
   is Kazuhiko Arase's MIT QR encoder, as in tekkoh-web.
 - `site/.well-known/apple-app-site-association`: makes `/link` a Universal
-  Link into the app (team U6U9XP94Z7, `io.singleton.tekkoh`).
+  Link into the app (Artifact's team TVA9Z8LD95,
+  `com.artifact.tekkoh`; the earlier `U6U9XP94Z7.io.singleton.tekkoh` stays
+  listed while phones move over).
 - `site/dl/`: the `tekkoh` CLI for Linux, built from `cmd/tekkoh` in
   arfct/tekkoh. When you rebuild, update the checksums in `setup.txt`
   and `dl/SHA256SUMS` along with the commit and Go version.

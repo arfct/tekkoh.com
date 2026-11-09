@@ -2,9 +2,15 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["U6U9XP94Z7.io.singleton.tekkoh"],
+        "appIDs": [
+          "TVA9Z8LD95.com.artifact.tekkoh",
+          "U6U9XP94Z7.io.singleton.tekkoh"
+        ],
         "components": [
-          { "/": "/link", "comment": "An agent's one-time link: opens Tekkoh to approve it" }
+          {
+            "/": "/link",
+            "comment": "An agent's one-time link: opens Tekkoh to approve it"
+          }
         ]
       }
     ]
