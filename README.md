@@ -24,7 +24,8 @@ CSS in `site/`, no build step. Netlify publishes `site/` on every push to
   arfct/tekkoh. When you rebuild, update the checksums in `setup.txt`
   and `dl/SHA256SUMS` along with the commit and Go version.
 
-Preview locally with `python3 -m http.server -d site`.
+Preview locally with `python3 -m http.server -d site`. Each pull request also
+gets a Netlify deploy preview; merging to `main` publishes.
 
 The previous version of the site, a React app from 2020, isn't part of this
 repository.
