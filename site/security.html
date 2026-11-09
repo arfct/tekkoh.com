@@ -38,18 +38,18 @@
 
   <h2>How</h2>
   <ul>
-    <li>Every page is sealed with its own random key using AES-256-GCM, and that key is sealed with your journal's key. Photos are sealed the same way, each with its own key.</li>
+    <li>Every page is encrypted with its own random key using AES-256-GCM, and that key is encrypted with your journal's key. Photos are encrypted the same way, each with its own key.</li>
     <li>A page's id is derived from your key and its date, so the server can't tell which day a page belongs to.</li>
     <li>A version number inside the encryption means the server can't hand back an older copy of a page as if it were current.</li>
-    <li>Your PIN is stretched with 600,000 rounds of PBKDF2 on your phone. What travels to the server is sealed to the server's own key, so nothing in transit can be used to test PINs.</li>
-    <li>The whole journal is kept on your phone, sealed exactly as the server holds it. Nothing is ever written to disk in the clear.</li>
-    <li>A linked browser gets the key from your phone, sealed so only that browser can open it, and holds it in a form even the page's own code can't read out. You can sign any browser out from your phone.</li>
+    <li>Your PIN is stretched with 600,000 rounds of PBKDF2 on your phone. What travels to the server is encrypted to the server's own key, so nothing in transit can be used to test PINs.</li>
+    <li>The whole journal is kept on your phone, encrypted exactly as the server holds it. Nothing is ever written to disk in the clear.</li>
+    <li>A linked browser gets the key from your phone, encrypted so only that browser can open it, and holds it in a form even the page's own code can't read out. You can sign any browser out from your phone.</li>
   </ul>
 
   <h2 id="agents">Agents</h2>
   <p>A personal agent can use your journal through the <code>tekkoh</code> command-line tool, ideally in a confidential VM you control. It reads, adds to your pages, and leaves a note in the margin saying what it did for you.</p>
   <ul>
-    <li><strong>You approve it on your phone.</strong> The agent sends you a one-time link. On your iPhone it opens Tekkoh, which shows the agent's name and six digits and asks for Face ID. The app then sends the key sealed so only that agent can open it. No PIN is typed anywhere.</li>
+    <li><strong>You approve it on your phone.</strong> The agent sends you a one-time link. On your iPhone it opens Tekkoh, which shows the agent's name and six digits and asks for Face ID. The app then sends the key encrypted so only that agent can open it. No PIN is typed anywhere.</li>
     <li><strong>The link holds nothing secret,</strong> and this site never sees it: everything is after the <code>#</code>. It works once, for fifteen minutes.</li>
     <li><strong>Only approve a link you asked for just now.</strong> Anyone can send you one, and the name in it is the sender's own say-so. Approving gives whoever made it the key to your whole journal.</li>
     <li><strong>An agent is as trusted as your phone.</strong> It holds the key itself, so it can read everything, and signing it out stops only an agent that plays fair. Link only one you'd trust with everything you've written.</li>

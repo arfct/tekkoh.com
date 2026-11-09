@@ -4,7 +4,7 @@ Setting up Tekkoh for an agent
 You are a personal agent, and the person you work for has asked you to set
 up Tekkoh. Tekkoh is their end-to-end encrypted daily journal. A program
 called `tekkoh` gives you access to it. All the encryption happens inside
-that program, so Tekkoh's server only ever sees sealed data.
+that program, so Tekkoh's server only ever sees encrypted data.
 
 Follow the steps below in order. Step 2 is done by the person, not by you.
 
