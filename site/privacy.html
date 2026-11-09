@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy · Tekkoh</title>
+<meta name="description" content="What Tekkoh keeps, what it can see, and how to delete it.">
+<meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B1A17" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&family=Shippori+Mincho:wght@500&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="top">
+  <a class="mark" href="/" aria-label="Tekkoh, home">
+    <svg class="enso" aria-hidden="true"><use href="/img/enso.svg#e"/></svg>
+    <span>Tekkoh</span>
+  </a>
+  <nav><a href="/">Home</a></nav>
+</header>
+
+<main class="doc">
+  <p class="label"><span class="kanji">秘</span> · Privacy</p>
+  <h1>Privacy policy</h1>
+  <p class="muted">Last updated 8 November 2026</p>
+
+  <p>Tekkoh is a journal for iPhone, made by Artifact. It is built so that we can't read what you write. This page says, plainly, what that means: what reaches us, what doesn't, and how to delete it.</p>
+
+  <h2>What we can't see</h2>
+  <p>Everything in your journal is encrypted on your phone, with a key only your devices hold, before it is sent anywhere. That covers your words, photos and their captions, the places your day took you, your steps and workouts, sunrise and sunset, and notes left by agents you link. Our server stores it only as ciphertext and has no way to decrypt it. <a class="quiet" href="/security">How the encryption works →</a></p>
+
+  <h2>What our server keeps</h2>
+  <ul>
+    <li><strong>Your username</strong>, which you choose. We don't ask for your name, email address or phone number.</li>
+    <li><strong>Your encrypted journal</strong>: pages and photos, with their sizes and when they were uploaded.</li>
+    <li><strong>What's needed to recover your journal with your PIN</strong>: a salt, a value derived from your PIN that we can check but not reverse, and your journal key locked with your PIN. None of these reveal your PIN or your key.</li>
+    <li><strong>The browsers and agents you link</strong>: the name each was given, when it was linked and when it was last used.</li>
+  </ul>
+
+  <h2>What passes through</h2>
+  <ul>
+    <li><strong>Request logs.</strong> Like any internet service, our server sees your IP address, the country it's in, your device's user agent, and the time and kind of each request. These are written to logs that are overwritten as they fill. Login tokens are never logged. We use them only to run the service and keep it secure.</li>
+    <li><strong>Cloudflare</strong> carries traffic between your devices and our server. It handles the connection, not your journal, which is already encrypted.</li>
+    <li><strong>Apple.</strong> Your journal key is shared between your devices through iCloud Keychain, which Apple encrypts end to end. To name the places you visit, the app sends their coordinates to Apple Maps, under <a class="quiet" href="https://www.apple.com/legal/privacy/">Apple's privacy policy</a>; they don't come to us.</li>
+  </ul>
+
+  <h2>On your phone</h2>
+  <p>With your permission, Tekkoh reads your location (to note where you went), steps, distance and workouts from Apple Health, and your photo library (to suggest the day's photos). It reads them on your phone and encrypts what it keeps. Health data is used only to show your activity on your pages: never for advertising, never shared, never sold. Each permission is optional and can be turned off in Settings.</p>
+
+  <h2>What we don't do</h2>
+  <p>No advertising, no analytics, no tracking, and no third-party code in the app that collects data. We don't sell or share your data with anyone.</p>
+
+  <h2>Browsers and agents you link</h2>
+  <p>If you link a browser or a personal agent to your journal, you give it your journal's key, and it can read and write your journal. What it does with that is up to it and whoever runs it, not us. You can sign any of them out from the app.</p>
+
+  <h2>Backups</h2>
+  <p>We keep encrypted backups of the server's data, holding the same ciphertext. Each is kept for fourteen days.</p>
+
+  <h2>Deleting your journal</h2>
+  <p>In the app, Settings › Delete journal everywhere deletes your account, every page and every photo from our server at once, and signs out every linked browser and agent. Copies in backups are gone within fourteen days. Signing out of a phone, by contrast, leaves your journal on the server so you can come back to it.</p>
+
+  <h2>Children</h2>
+  <p>Tekkoh isn't directed at children under 13, and we don't knowingly hold accounts for them.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, we'll update it here and change the date at the top. Tekkoh is open source, so you can check what the app and server actually do: <a class="quiet" href="https://github.com/arfct/tekkoh-ios">arfct/tekkoh-ios</a> and <a class="quiet" href="https://github.com/arfct/tekkoh">arfct/tekkoh</a>.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy: <a class="quiet" href="/support#contact">see Support</a>.</p>
+</main>
+
+<footer>
+  <span class="kanji">手帳</span>
+  <a href="/">Tekkoh</a>
+  <a href="/security">Security</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/support">Support</a>
+  <span class="muted">© 2026 Artifact</span>
+</footer>
+
+</body>
+</html>
