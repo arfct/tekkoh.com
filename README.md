@@ -1,6 +1,7 @@
 # tekkoh.com
 
-The landing page for Tekkoh, a private journal for iPhone. Static HTML and
+The landing page for Tekkoh, a private journal for iPhone
+([on the App Store](https://apps.apple.com/app/tekkoh/id6832421132)). Static HTML and
 CSS in `site/`, no build step. Netlify publishes `site/` on every push to
 `main` (see `netlify.toml`).
 
